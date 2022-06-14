@@ -382,6 +382,7 @@ void PolarDriftToolWin::PaintHelper(wxAutoBufferedPaintDCBase& dc, double scale)
     dc.SetPen(wxPen(wxColor(255, 0, 0), 1, wxPENSTYLE_SOLID));
     dc.DrawLine(m_current.X*scale, m_current.Y*scale, m_target.X*scale, m_target.Y*scale);
     dc.DrawCircle(m_target.X*scale, m_target.Y*scale, 10*scale);
+
 }
 
 bool PolarDriftToolWin::WatchDrift()
@@ -429,9 +430,11 @@ bool PolarDriftToolWin::WatchDrift()
         m_current.X, m_current.Y));
     Debug.AddLine(wxString::Format("Polar Drift: slope(X,Y) %.4f,%.4f m_offset %.1f theta %.1f m_alpha %.1f", xslope, yslope, m_offset, theta, m_alpha));
     Debug.AddLine(wxString::Format("Polar Drift: m_target(X,Y) %.1f,%.1f", m_target.X, m_target.Y));
-    SetStatusText(wxString::Format(_("Time %.fs"), tnow), 0);
-    SetStatusText(wxString::Format(_("PA Err: %.f min"), m_offset*m_pxScale / 60), 1);
-    SetStatusText(wxString::Format(_("Angle: %.f deg"), norm(-m_alpha, -180, 180)), 2);
+    SetStatusText(wxString::Format(_("X Err: %f "), xslope*factor), 0);
+    SetStatusText(wxString::Format(_("Y Err: %f "), yslope*factor), 1);
+    SetStatusText(wxString::Format(_("PA Err: %.f min"), m_offset*m_pxScale / 60), 2);
+
+
 
     return true;
 }
